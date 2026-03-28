@@ -1,0 +1,14 @@
+{
+  "name": "retail-shopping-app",
+  "private": true,
+  "workspaces": ["backend", "frontend"],
+  "scripts": {
+    "backend": "npm run start:dev --workspace=backend",
+    "frontend": "npm run start --workspace=frontend",
+    "frontend:android": "npm run android --workspace=frontend",
+    "frontend:ios": "npm run ios --workspace=frontend",
+    "frontend:ios:device": "npm run ios --workspace=frontend -- --device",
+    "frontend:web": "npm run web --workspace=frontend",
+    "test": "npm run test --workspace=backend && npm run test --workspace=frontend"
+  }
+}
