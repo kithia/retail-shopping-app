@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import {
+  View,
   Text,
   FlatList,
   TouchableOpacity,
@@ -16,38 +17,52 @@ export default function ProductListScreen() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
+  const loadProducts = async () => {
+    try {
+      setIsLoading(true)
+      setError(null)
+      const data = await getProducts()
+      setProducts(data)
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Failed to load products'
+      setError(message)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   useEffect(() => {
-    getProducts()
-      .then(setProducts)
-      .catch((err) => setError(err.message || 'Failed to load products'))
-      .finally(() => setIsLoading(false))
+    loadProducts()
   }, [])
 
   if (isLoading) return <ActivityIndicator style={styles.center} />
   if (error) return <Text style={styles.error}>{error}</Text>
 
   return (
-    <FlatList
-      data={products}
-      keyExtractor={p => p.id.toString()}
-      contentContainerStyle={styles.list}
-      renderItem={({ item }) => (
-        <TouchableOpacity
-          style={styles.card}
-          //onPress={() => router.push(`/product/${item.id}`)}
-        >
-          <Text style={styles.name}>{item.name}</Text>
-          <Text style={styles.price}>£{item.price.toFixed(2)}</Text>
-          <Text style={item.stock > 0 ? styles.inStock : styles.outOfStock}>
-            {item.stock > 0 ? `${item.stock} in stock` : 'Out of stock'}
-          </Text>
-        </TouchableOpacity>
-      )}
-    />
+    <View style={styles.container}>
+      <FlatList
+        data={products}
+        keyExtractor={p => p.id.toString()}
+        contentContainerStyle={styles.list}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => router.push(`/product/${item.id}`)}
+          >
+            <Text style={styles.name}>{item.name}</Text>
+            <Text style={styles.price}>£{item.price.toFixed(2)}</Text>
+            <Text style={item.stock > 0 ? styles.inStock : styles.outOfStock}>
+              {item.stock > 0 ? `${item.stock} in stock` : 'Out of stock'}
+            </Text>
+          </TouchableOpacity>
+        )}
+      />
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
+  container: { flex: 1 },
   center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   list: { padding: 16, gap: 12 },
   card: {
