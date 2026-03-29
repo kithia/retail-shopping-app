@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Cart } from 'src/entities/cart';
 import { ProductService } from './product.service';
 import { NEW_CART } from 'src/seeds/new-cart';
@@ -38,7 +38,7 @@ export class CartService {
         this.cart.subTotal += product.price * quantity;
         this.cart.lastActiveAt = new Date();
       } else {
-        throw new Error(`Product with id ${productId} not found or missing required fields.`);
+        throw new NotFoundException(`Product with id ${productId} not found or missing required fields.`);
       }
     }
   }
@@ -50,7 +50,7 @@ export class CartService {
       this.cart.items = this.cart.items.filter(item => item.productId !== productId);
       this.cart.lastActiveAt = new Date();
     } else {
-      throw new Error(`Product with id ${productId} not found in cart.`);
+      throw new NotFoundException(`Product with id ${productId} not found in cart.`);
     }
   }
 
@@ -65,14 +65,14 @@ export class CartService {
       }
       this.cart.lastActiveAt = new Date();
     } else {
-      throw new Error(`Product with id ${productId} not found in cart.`);
+      throw new NotFoundException(`Product with id ${productId} not found in cart.`);
     }
   }
 
   checkout(): CheckoutResponse {
     if (this.cart.items.length === 0) {
       this.clear();
-      return { success: false, message: 'Cart has expired. Please add items before checkout.' };
+      throw new BadRequestException({ success: false, message: 'Cart has expired. Please add items before checkout.' });
     }
 
     const insufficientStock: InsufficientStockInfo[] = [];
@@ -89,11 +89,11 @@ export class CartService {
 
     if (insufficientStock.length > 0) {
       this.clear();
-      return { 
-      success: false, 
-      message: 'The following items are out of stock or do not have enough stock to fulfill your order:', 
-      insufficientStock 
-      };
+      throw new BadRequestException({ 
+        success: false, 
+        message: 'The following items are out of stock or do not have enough stock to fulfill your order:', 
+        insufficientStock 
+      });
     }
 
     // Deduct stock for all items

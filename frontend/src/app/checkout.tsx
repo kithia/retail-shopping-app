@@ -15,18 +15,18 @@ import { AppliedDiscount } from '@/types/applied-discount'
 
 export default function CheckoutScreen() {
   const router = useRouter()
-  const [loading, setLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [result, setResult] = useState<CheckoutResponse | null>(null)
 
   const handleCheckout = async () => {
-    setLoading(true)
+    setIsLoading(true)
     try {
       const response = await checkoutCart()
       setResult(response)
     } catch {
       setResult({ success: false, message: 'Something went wrong. Please try again.' })
     } finally {
-      setLoading(false)
+      setIsLoading(false)
     }
   }
 
@@ -43,9 +43,9 @@ export default function CheckoutScreen() {
           <TouchableOpacity
             style={styles.checkoutButton}
             onPress={handleCheckout}
-            disabled={loading}
+            disabled={isLoading}
           >
-            {loading
+            {isLoading
               ? <ActivityIndicator color='#fff' />
               : <Text style={styles.checkoutText}>Place Order</Text>
             }

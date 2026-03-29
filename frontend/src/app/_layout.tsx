@@ -1,16 +1,7 @@
 import { Stack, useRouter } from 'expo-router'
 import { ThemeProvider, DefaultTheme } from '@react-navigation/native'
 import { AnimatedSplashOverlay } from '@/components/animated-icon/animated-icon';
-import { TouchableOpacity, Text } from 'react-native';
-
-function CartIcon() {
-  const router = useRouter()
-  return (
-    <TouchableOpacity onPress={() => router.push('/cart')} style={{ marginHorizontal: 12 }}>
-      <Text style={{ fontSize: 22 }}>🛒</Text>
-    </TouchableOpacity>
-  )
-}
+import { CartIcon } from '@/components/cart-icon';
 
 export default function StackLayout() {
   return (

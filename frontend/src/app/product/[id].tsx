@@ -39,7 +39,8 @@ export default function ProductDetailScreen() {
       const data = await getProduct(productId)
       setProduct(data)
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to load product'
+      const message =
+        `Oops...\nIt looks like we don't have this product in our catalogue.\n\nPlease navigate back to the product list and select another item.`
       setError(message)
     } finally {
       setIsLoading(false)

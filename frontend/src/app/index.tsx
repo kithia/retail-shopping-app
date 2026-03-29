@@ -24,7 +24,8 @@ export default function ProductListScreen() {
       const data = await getProducts()
       setProducts(data)
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to load products'
+      const message =
+        'Something went wrong while loading products.\nPlease try again.\n\nIf the issue persists, contact customer support.'
       setError(message)
     } finally {
       setIsLoading(false)

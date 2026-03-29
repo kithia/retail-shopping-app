@@ -22,7 +22,7 @@ import { CartItem } from '@/types/cartItem'
 export default function CartScreen() {
   const router = useRouter()
   const [cart, setCart] = useState<Cart | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   const fetchCart = async () => {
@@ -32,7 +32,7 @@ export default function CartScreen() {
     } catch {
       setError('Failed to load cart')
     } finally {
-      setLoading(false)
+      setIsLoading(false)
     }
   }
 
@@ -85,7 +85,7 @@ export default function CartScreen() {
     ])
   }
 
-  if (loading) return <ActivityIndicator style={styles.center} />
+  if (isLoading) return <ActivityIndicator style={styles.center} />
   if (error) return <Text style={styles.error}>{error}</Text>
   if (!cart || cart.items.length === 0) {
     return (
