@@ -70,6 +70,20 @@ export default function CheckoutScreen() {
             {result.message ?? 'Your order could not be completed.'}
           </Text>
 
+          {result.insufficientStock && result.insufficientStock.length > 0 && (
+            <View style={styles.stockIssueList}>
+              <Text style={styles.stockIssueTitle}>Please consider adjusting your cart:</Text>
+              {result.insufficientStock.map((stockIssue) => (
+                <Text
+                  key={stockIssue.productName}
+                  style={styles.stockIssueItem}
+                >
+                  {stockIssue.productName}: Requested {stockIssue.requested}
+                </Text>
+              ))}
+            </View>
+          )}
+
           <TouchableOpacity
             style={styles.checkoutButton}
             onPress={() => router.push('/')}
@@ -172,6 +186,15 @@ const styles = StyleSheet.create({
   failureIcon: { fontSize: 48, color: 'red' },
   failureTitle: { fontSize: 22, fontWeight: '700', color: 'red' },
   failureMessage: { fontSize: 15, color: '#444', textAlign: 'center' },
+  stockIssueList: {
+    width: '100%',
+    backgroundColor: '#fff1f1',
+    borderRadius: 8,
+    padding: 12,
+    gap: 6,
+  },
+  stockIssueTitle: { fontSize: 14, fontWeight: '700', color: '#8a1f1f' },
+  stockIssueItem: { fontSize: 14, color: '#8a1f1f' },
 
   // Success
   successIcon: { fontSize: 48, color: 'green', textAlign: 'center' },

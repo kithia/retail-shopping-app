@@ -5,7 +5,7 @@ import { NEW_CART } from 'src/seeds/new-cart';
 import { CronExpression } from '@nestjs/schedule/dist/enums/cron-expression.enum';
 import { Cron } from '@nestjs/schedule/dist/decorators/cron.decorator';
 import { DiscountService } from './discount.service';
-import { CheckoutResponse } from 'src/dtos/checkout.dto';
+import { CheckoutResponse, InsufficientStockInfo } from 'src/dtos/checkout.dto';
 
 @Injectable()
 export class CartService {
@@ -72,16 +72,28 @@ export class CartService {
   checkout(): CheckoutResponse {
     if (this.cart.items.length === 0) {
       this.clear();
-      return { success: false, message: 'Cart is empty. Please add items before checkout.' };
+      return { success: false, message: 'Cart has expired. Please add items before checkout.' };
     }
 
-    // Check stock for all items first
+    const insufficientStock: InsufficientStockInfo[] = [];
     for (const item of this.cart.items) {
       const product = this._productService.getById(item.productId);
       if (product && product.stock < item.quantity) {
-        this.clear();
-        return { success: false, message: `Insufficient stock for product ${product.name}. Available: ${product.stock}, Requested: ${item.quantity}` };
+      insufficientStock.push({
+        productName: product.name,
+        available: product.stock,
+        requested: item.quantity
+      });
       }
+    }
+
+    if (insufficientStock.length > 0) {
+      this.clear();
+      return { 
+      success: false, 
+      message: 'The following items are out of stock or do not have enough stock to fulfill your order:', 
+      insufficientStock 
+      };
     }
 
     // Deduct stock for all items

@@ -1,6 +1,12 @@
 import { AppliedDiscount } from "../applied-discount"
 import { CartItem } from "../cartItem"
 
+export interface InsufficientStockInfo {
+  productName: string
+  requested: number
+  available: number
+}
+
 export interface CheckoutResponse {
   success: boolean
   message?: string
@@ -8,4 +14,5 @@ export interface CheckoutResponse {
   subtotal?: number
   appliedDiscounts?: AppliedDiscount[]
   totalDiscount?: number
+  insufficientStock?: InsufficientStockInfo[]
 }

@@ -103,7 +103,7 @@ export default function CartScreen() {
       <FlatList
         ListHeaderComponent={
           <Text style={{ color: '#888', fontSize: 13, marginBottom: 8 }}>
-            Your basket will expire after 2 minutes of inactivity.
+            Your cart will expire after 2 minutes of inactivity.
           </Text>
         }
         data={cart.items}

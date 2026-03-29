@@ -68,7 +68,7 @@ export default function ProductDetailScreen() {
 
   return (
     <>
-      <Stack.Screen options={{ title: product.name }} />
+      <Stack.Screen options={{ title: '' }} />
       <View style={styles.container}>
         <Text style={styles.name}>{product.name}</Text>
         <Text style={styles.price}>£{product.price.toFixed(2)}</Text>
