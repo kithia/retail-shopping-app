@@ -6,9 +6,10 @@ import { CartService } from './services/cart.service';
 import { CartController } from './controller/cart.controller';
 import { ScheduleModule } from '@nestjs/schedule/dist/schedule.module';
 import { DiscountService } from './services/discount.service';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [ScheduleModule.forRoot()],
+  imports: [ScheduleModule.forRoot(), ConfigModule.forRoot({ isGlobal: true })],
   controllers: [AppController, ProductController, CartController],
   providers: [ProductService, CartService, DiscountService],
 })
