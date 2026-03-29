@@ -16,8 +16,8 @@ import {
   addProductToCart,
   clearCart,
 } from '@/api/services/cart-service'
-import { Cart } from '@/api/types/cart'
-import { CartItem } from '@/api/types/cartItem'
+import { Cart } from '@/types/cart'
+import { CartItem } from '@/types/cartItem'
 
 export default function CartScreen() {
   const router = useRouter()
@@ -101,6 +101,11 @@ export default function CartScreen() {
   return (
     <View style={styles.container}>
       <FlatList
+        ListHeaderComponent={
+          <Text style={{ color: '#888', fontSize: 13, marginBottom: 8 }}>
+            Your basket will expire after 2 minutes of inactivity.
+          </Text>
+        }
         data={cart.items}
         keyExtractor={item => item.productId.toString()}
         contentContainerStyle={styles.list}

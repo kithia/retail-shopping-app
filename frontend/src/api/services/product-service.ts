@@ -1,5 +1,5 @@
 import client from './../client'
-import { Product } from './../types/product'
+import { Product } from '../../types/product'
 
 export const getProducts = async (): Promise<Product[]> => {
   const response = await client.get('/products')

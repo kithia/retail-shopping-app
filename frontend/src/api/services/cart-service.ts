@@ -1,6 +1,6 @@
-import { CheckoutResponse } from '../types/dtos/chekout-reponse'
+import { CheckoutResponse } from '../../types/dtos/chekout-reponse'
 import client from './../client'
-import { Cart } from './../types/cart'
+import { Cart } from '../../types/cart'
 
 export const getCart = async (): Promise<Cart> => {
   const response = await client.get('/cart')

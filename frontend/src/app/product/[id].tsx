@@ -10,7 +10,7 @@ import {
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router'
 import { addProductToCart } from '@/api/services/cart-service'
 import { getProduct } from '@/api/services/product-service'
-import { Product } from '@/api/types/product'
+import { Product } from '@/types/product'
 
 export default function ProductDetailScreen() {
   const router = useRouter()

@@ -9,9 +9,9 @@ import {
 } from 'react-native'
 import { useRouter } from 'expo-router'
 import { checkoutCart } from '@/api/services/cart-service'
-import { CheckoutResponse } from '@/api/types/dtos/chekout-reponse'
-import { CartItem } from '@/api/types/cartItem'
-import { AppliedDiscount } from '@/api/types/applied-discount'
+import { CheckoutResponse } from '@/types/dtos/chekout-reponse'
+import { CartItem } from '@/types/cartItem'
+import { AppliedDiscount } from '@/types/applied-discount'
 
 export default function CheckoutScreen() {
   const router = useRouter()
@@ -72,9 +72,9 @@ export default function CheckoutScreen() {
 
           <TouchableOpacity
             style={styles.checkoutButton}
-            onPress={() => router.push('/cart')}
+            onPress={() => router.push('/')}
           >
-            <Text style={styles.checkoutText}>Back to Cart</Text>
+            <Text style={styles.checkoutText}>Back to Home</Text>
           </TouchableOpacity>
         </View>
       </View>

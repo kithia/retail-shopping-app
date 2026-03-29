@@ -1,6 +1,6 @@
 import { Stack } from 'expo-router'
 import { ThemeProvider, DefaultTheme } from '@react-navigation/native'
-import { AnimatedSplashOverlay } from '@/components/animated-icon';
+import { AnimatedSplashOverlay } from '@/components/animated-icon/animated-icon';
 
 export default function StackLayout() {
 

@@ -9,7 +9,7 @@ import {
 } from 'react-native'
 import { useRouter } from 'expo-router'
 import { getProducts } from '@/api/services/product-service'
-import { Product } from '@/api/types/product'
+import { Product } from '@/types/product'
 
 export default function ProductListScreen() {
   const router = useRouter()
