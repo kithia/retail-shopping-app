@@ -9,6 +9,8 @@
     "frontend:ios": "npm run ios --workspace=frontend",
     "frontend:ios:device": "npm run ios --workspace=frontend -- --device",
     "frontend:web": "npm run web --workspace=frontend",
-    "test": "npm run test --workspace=backend && npm run test --workspace=frontend"
+    "test": "npm run test --workspace=backend && npm run test --workspace=frontend",
+    "backend:test": "npm run test --workspace=backend",
+    "frontend:test": "npm run test --workspace=frontend"
   }
 }
