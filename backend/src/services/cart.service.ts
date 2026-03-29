@@ -2,17 +2,20 @@ import { Injectable } from '@nestjs/common';
 import { Cart } from 'src/entities/cart';
 import { ProductService } from './product.service';
 import { NEW_CART } from 'src/seeds/new-cart';
-import { CartItem } from 'src/entities/cartItem';
 import { CronExpression } from '@nestjs/schedule/dist/enums/cron-expression.enum';
 import { Cron } from '@nestjs/schedule/dist/decorators/cron.decorator';
+import { DiscountService } from './discount.service';
+import { CheckoutResponse } from 'src/dtos/checkout.dto';
 
 @Injectable()
 export class CartService {
   private readonly cart: Cart = NEW_CART;
-  private readonly _productService: ProductService;  
+  private readonly _productService: ProductService; 
+  private readonly discountService: DiscountService;
 
-  constructor(productService: ProductService) {
+  constructor(productService: ProductService, discountService: DiscountService) {
     this._productService = productService;
+    this.discountService = discountService;
   }
 
   get(): Cart {
@@ -66,7 +69,7 @@ export class CartService {
     }
   }
 
-  checkout(): { success: boolean; message?: string; order?: CartItem[] } {
+  checkout(): CheckoutResponse {
     if (this.cart.items.length === 0) {
       this.clear();
       return { success: false, message: 'Cart is empty. Please add items before checkout.' };
@@ -90,8 +93,18 @@ export class CartService {
     });
 
     const order = [...this.cart.items];
+    const subtotal = this.cart.subTotal;
+    const appliedDiscounts = this.discountService.applyDiscounts(
+      this.cart.items,
+      subtotal
+    )
+    const totalDiscount = appliedDiscounts.reduce(
+      (sum, d) => sum + d.amountDeducted, 0
+    )
+
     this.clear();
-    return { success: true, order };
+    const response: CheckoutResponse = { success: true, order, subtotal, appliedDiscounts, totalDiscount };
+    return response;
   }
 
   clear(): void {

@@ -6,55 +6,48 @@ export const PRODUCT_CATALOGUE: Product[] = [
     name: "Classic White Shirt",
     description: "A timeless plain white cotton shirt, perfect for any occasion.",
     price: 25.0,
-    imageUrl: "https://example.com/white-shirt.jpg",
-    stock: 100
+    stock: 10
   },
   {
     id: 2,
     name: "Navy Blue Trousers",
     description: "Smart navy blue trousers made from high-quality fabric for comfort and style.",
     price: 40.0,
-    imageUrl: "https://example.com/navy-trousers.jpg",
-    stock: 50
+    stock: 5
   },
   {
     id: 3,
     name: "Silk Navy Tie",
     description: "Elegant navy silk tie, ideal for formal and business wear.",
     price: 15.0,
-    imageUrl: "https://example.com/navy-tie.jpg",
-    stock: 200
+    stock: 2
   },
   {
     id: 4,
     name: "Black Leather Belt",
     description: "Classic black leather belt with a silver buckle.",
     price: 18.0,
-    imageUrl: "https://example.com/black-belt.jpg",
-    stock: 75
+    stock: 5
   },
   {
     id: 5,
     name: "Brown Brogue Shoes",
     description: "Traditional brown leather brogue shoes with detailed perforations.",
     price: 60.0,
-    imageUrl: "https://example.com/brogue-shoes.jpg",
-    stock: 30
+    stock: 3
   },
   {
     id: 6,
     name: "Grey Wool Sweater",
     description: "Soft grey wool sweater, perfect for layering in cooler weather.",
     price: 35.0,
-    imageUrl: "https://example.com/grey-sweater.jpg",
-    stock: 80
+    stock: 8
   },
   {
     id: 7,
     name: "Plain Black Socks",
     description: "Comfortable plain black socks, suitable for everyday wear.",
     price: 5.0,
-    imageUrl: "https://example.com/black-socks.jpg",
-    stock: 500
+    stock: 15
   }
 ]
