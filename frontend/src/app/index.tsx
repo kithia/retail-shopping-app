@@ -11,12 +11,22 @@ import { useRouter } from 'expo-router'
 import { getProducts } from '@/api/services/product-service'
 import { Product } from '@/types/product'
 
+/**
+ * Product List Screen (Product Lisitng Page)
+ * @returns JSX.Element
+ */
 export default function ProductListScreen() {
+  // Router
   const router = useRouter()
+
+  // State variables
   const [products, setProducts] = useState<Product[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
+  /**
+   * Load products from the API
+   */
   const loadProducts = async () => {
     try {
       setIsLoading(true)
@@ -62,6 +72,7 @@ export default function ProductListScreen() {
   )
 }
 
+// Styles
 const styles = StyleSheet.create({
   container: { flex: 1 },
   center: { flex: 1, justifyContent: 'center', alignItems: 'center' },

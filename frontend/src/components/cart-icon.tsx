@@ -4,7 +4,12 @@ import {
   TouchableOpacity,
 } from 'react-native'
 
+/**
+ * Cart Icon Component
+ * @returns JSX.Element
+ */
 export function CartIcon() {
+  // Router
   const router = useRouter()
 
   return (

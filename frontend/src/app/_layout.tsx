@@ -3,6 +3,10 @@ import { ThemeProvider, DefaultTheme } from '@react-navigation/native'
 import { AnimatedSplashOverlay } from '@/components/animated-icon/animated-icon';
 import { CartIcon } from '@/components/cart-icon';
 
+/**
+ * Stack Layout for the application
+ * @returns JSX.Element
+ */
 export default function StackLayout() {
   return (
     <ThemeProvider value={DefaultTheme}>

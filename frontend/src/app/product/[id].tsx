@@ -12,11 +12,17 @@ import { addProductToCart } from '@/api/services/cart-service'
 import { getProduct } from '@/api/services/product-service'
 import { Product } from '@/types/product'
 
+/**
+ * Product Detail Screen (Product Detail Page)
+ * @returns JSX.Element
+ */
 export default function ProductDetailScreen() {
+  // Router and params
   const router = useRouter()
   const params = useLocalSearchParams<{ id?: string | string[] }>()
   const productId = Array.isArray(params.id) ? params.id[0] : params.id
 
+  // State variables
   const [product, setProduct] = useState<Product | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -26,6 +32,9 @@ export default function ProductDetailScreen() {
     loadProduct()
   }, [productId])
 
+  /**
+   * Load product details
+   */
   const loadProduct = async () => {
     if (!productId) {
       setError('No product ID provided')
@@ -47,6 +56,9 @@ export default function ProductDetailScreen() {
     }
   }
 
+  /**
+   * Handle adding the product to the cart
+   */
   const handleAddToCart = async () => {
     if (!product) {
       return
@@ -91,6 +103,7 @@ export default function ProductDetailScreen() {
   )
 }
 
+// Styles
 const styles = StyleSheet.create({
   center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   container: { flex: 1, padding: 24, gap: 16, backgroundColor: '#fff' },

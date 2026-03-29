@@ -13,11 +13,21 @@ import { CheckoutResponse } from '@/types/dtos/chekout-reponse'
 import { CartItem } from '@/types/cartItem'
 import { AppliedDiscount } from '@/types/applied-discount'
 
+/**
+ * Checkout Screen
+ * @returns JSX.Element
+ */
 export default function CheckoutScreen() {
+  // Router
   const router = useRouter()
+
+  // State variables
   const [isLoading, setIsLoading] = useState(false)
   const [result, setResult] = useState<CheckoutResponse | null>(null)
 
+  /**
+   * Handle the checkout process
+   */
   const handleCheckout = async () => {
     setIsLoading(true)
     try {
@@ -126,7 +136,7 @@ export default function CheckoutScreen() {
           <Text style={styles.sectionTitle}>Discounts Applied</Text>
           {result.appliedDiscounts.map((discount: AppliedDiscount) => (
             <View key={discount.discountId} style={styles.orderRow}>
-              <Text style={styles.discountName}>{discount.name}</Text>
+              <Text style={styles.discountName}>{discount.discountName}</Text>
               <Text style={styles.discountAmount}>
                 -£{discount.amountDeducted.toFixed(2)}
               </Text>
@@ -167,6 +177,7 @@ export default function CheckoutScreen() {
   )
 }
 
+// Styles
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f5f5f5' },
   scrollContent: { padding: 16, gap: 16 },

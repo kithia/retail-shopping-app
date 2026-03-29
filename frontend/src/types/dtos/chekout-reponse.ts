@@ -1,6 +1,11 @@
 import { AppliedDiscount } from "../applied-discount"
 import { CartItem } from "../cartItem"
 
+/**
+ * Checkout Response DTO
+ * Represents the response returned after processing a checkout operation.
+ */
+
 export interface InsufficientStockInfo {
   productName: string
   requested: number

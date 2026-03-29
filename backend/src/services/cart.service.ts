@@ -134,7 +134,6 @@ export class CartService {
       if (product && product.stock < item.quantity) {
       insufficientStock.push({
         productName: product.name,
-        available: product.stock,
         requested: item.quantity
       });
       }

@@ -9,7 +9,6 @@ import { CartItem } from "src/entities/cartItem"
 export interface InsufficientStockInfo {
   productName: string
   requested: number
-  available: number
 }
 
 export interface CheckoutResponse {

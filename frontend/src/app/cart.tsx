@@ -19,12 +19,20 @@ import {
 import { Cart } from '@/types/cart'
 import { CartItem } from '@/types/cartItem'
 
+/**
+ * Cart Screen
+ * @returns JSX.Element
+ */
 export default function CartScreen() {
+  // Router
   const router = useRouter()
+
+  // State variables
   const [cart, setCart] = useState<Cart | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
+  // Fetch cart details
   const fetchCart = async () => {
     try {
       const data = await getCart()
@@ -40,6 +48,10 @@ export default function CartScreen() {
     fetchCart()
   }, [])
 
+  /**
+   * Handle increasing the quantity of a cart item
+   * @param item The cart item to increase the quantity of
+   */
   const handleIncrease = async (item: CartItem) => {
     try {
       await addProductToCart(item.productId, 1)
@@ -49,6 +61,10 @@ export default function CartScreen() {
     }
   }
 
+  /**
+   * Handle decreasing the quantity of a cart item
+   * @param item The cart item to decrease the quantity of
+   */
   const handleDecrease = async (item: CartItem) => {
     try {
       if (item.quantity === 1) {
@@ -62,6 +78,10 @@ export default function CartScreen() {
     }
   }
 
+  /**
+   * Handle removing a product from the cart
+   * @param productId The ID of the product to remove
+   */
   const handleRemove = async (productId: number) => {
     try {
       await removeProductFromCart(productId)
@@ -71,6 +91,9 @@ export default function CartScreen() {
     }
   }
 
+  /**
+   * Handle clearing the cart with confirmation
+   */
   const handleClear = () => {
     Alert.alert('Clear Cart', 'Are you sure you want to clear your cart?', [
       { text: 'Cancel', style: 'cancel' },
@@ -100,6 +123,7 @@ export default function CartScreen() {
 
   return (
     <View style={styles.container}>
+      {/* Cart items list */}
       <FlatList
         ListHeaderComponent={
           <Text style={{ color: '#888', fontSize: 13, marginBottom: 8 }}>
@@ -147,6 +171,7 @@ export default function CartScreen() {
         )}
       />
 
+      {/* Footer with subtotal and checkout button */}
       <View style={styles.footer}>
         <View style={styles.subtotalRow}>
           <Text style={styles.subtotalLabel}>Subtotal</Text>
@@ -170,6 +195,7 @@ export default function CartScreen() {
   )
 }
 
+// Styles
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f5f5f5' },
   center: { flex: 1, justifyContent: 'center', alignItems: 'center' },

@@ -65,7 +65,7 @@ export class DiscountService {
 
     return {
       discountId: discount.id,
-      name: discount.name,
+      discountName: discount.name,
       amountDeducted: discount.value,
     }
   }
@@ -91,7 +91,7 @@ export class DiscountService {
 
     return {
       discountId: discount.id,
-      name: discount.name,
+      discountName: discount.name,
       amountDeducted: freeItems * item.productPrice,
     }
   }

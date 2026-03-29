@@ -9,5 +9,4 @@ export interface Cart {
   items: CartItem[];
   subTotal: number;
   lastActiveAt: Date;
-  createdAt: Date;
 }

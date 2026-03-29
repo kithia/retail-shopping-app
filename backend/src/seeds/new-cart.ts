@@ -9,5 +9,4 @@ export const NEW_CART: Cart = {
   items: [],
   subTotal: 0,
   lastActiveAt: new Date(),
-  createdAt: new Date()
 };
