@@ -1,7 +1,11 @@
 import { Discount } from "src/entities/discount";
 import { DiscountType } from "src/entities/discount-type";
 
-export const discounts: Discount[] = [
+/**
+ * Discounts
+ * This array defines the available discounts in the retail shopping application.
+ */
+export const DISCOUNTS: Discount[] = [
   {
     id: '10GBPOFF',
     name: 'Big Spender',

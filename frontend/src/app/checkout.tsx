@@ -72,13 +72,13 @@ export default function CheckoutScreen() {
 
           {result.insufficientStock && result.insufficientStock.length > 0 && (
             <View style={styles.stockIssueList}>
-              <Text style={styles.stockIssueTitle}>Please consider adjusting your cart:</Text>
+              <Text style={styles.stockIssueTitle}>Please consider adjusting your cart</Text>
               {result.insufficientStock.map((stockIssue) => (
                 <Text
                   key={stockIssue.productName}
                   style={styles.stockIssueItem}
                 >
-                  {stockIssue.productName}: Requested {stockIssue.requested}
+                  {stockIssue.productName}: Quantity {stockIssue.requested}
                 </Text>
               ))}
             </View>

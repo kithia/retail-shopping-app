@@ -1,6 +1,11 @@
 import { AppliedDiscount } from "src/entities/applied-discount"
 import { CartItem } from "src/entities/cartItem"
 
+/**
+ * CheckoutReponse
+ * This interface defines the structure of the response returned by the checkout endpoint.
+ */
+
 export interface InsufficientStockInfo {
   productName: string
   requested: number

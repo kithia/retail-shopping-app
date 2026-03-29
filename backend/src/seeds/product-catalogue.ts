@@ -1,5 +1,9 @@
 import { Product } from './../entities/product';
 
+/**
+ * PRODUCT_CATALOGUE
+ * This is a hardcoded list of products available in the store.
+ */
 export const PRODUCT_CATALOGUE: Product[] = [
   {
     id: 1,
