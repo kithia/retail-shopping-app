@@ -1,6 +1,6 @@
-import { Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { CartService } from 'src/services/cart.service';
-import type { Cart } from 'src/entities/cart/cart';
+import type { Cart } from 'src/entities/cart';
 
 @Controller('cart')
 export class CartController {
@@ -11,19 +11,29 @@ export class CartController {
     return this.cartService.get();
   }
 
-  @Post('add/:productId/:quantity')
-  addProductToCart(@Param('productId') productId: string, @Param('quantity') quantity: string): void {
-    this.cartService.addProduct(Number(productId), Number(quantity));
+  @Post('add')
+  addProductToCart(
+    @Body() body: { productId: number; quantity: number }
+  ): void {
+    const { productId, quantity } = body;
+    this.cartService.addProductById(productId, quantity);
   }
 
-  @Post('remove/:productId')
-  removeProductFromCart(@Param('productId') productId: string): void {
-    this.cartService.removeProduct(Number(productId));
+  @Post('remove')
+  removeProductFromCart(@Body() body: { productId: number }): void {
+    const { productId } = body;
+    this.cartService.removeProductById(productId);
   }
 
-  @Post('reduce/:productId/:quantity')
-  reduceProductQuantityInCart(@Param('productId') productId: string, @Param('quantity') quantity: string): void {
-    this.cartService.reduceProductQuantity(Number(productId), Number(quantity));
+  @Post('reduce')
+  reduceProductQuantityInCart(@Body() body: { productId: number; quantity: number }): void {
+    const { productId, quantity } = body;
+    this.cartService.reduceProductQuantityById(productId, quantity);
+  }
+
+  @Post('checkout')
+  checkoutCart(): { success: boolean; message?: string; order?: Cart['items'] } {
+    return this.cartService.checkout();
   }
 
   @Post('clear')

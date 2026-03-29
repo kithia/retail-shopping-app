@@ -1,18 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { Cart } from 'src/entities/cart/cart';
+import { Cart } from 'src/entities/cart';
 import { ProductService } from './product.service';
+import { NEW_CART } from 'src/seeds/new-cart';
+import { CartItem } from 'src/entities/cartItem';
+import { CronExpression } from '@nestjs/schedule/dist/enums/cron-expression.enum';
+import { Cron } from '@nestjs/schedule/dist/decorators/cron.decorator';
 
 @Injectable()
 export class CartService {
-  private readonly _productService: ProductService;
-
-  private readonly cart: Cart = {
-    id: 1,
-    items: [],
-    subTotal: 0,
-    lastActiveAt: new Date(),
-    createdAt: new Date(),
-  };
+  private readonly cart: Cart = NEW_CART;
+  private readonly _productService: ProductService;  
 
   constructor(productService: ProductService) {
     this._productService = productService;
@@ -22,7 +19,12 @@ export class CartService {
     return this.cart;
   }
 
-  addProduct(productId: number, quantity: number): void {
+  getReservedQuantityById(productId: number): number {
+    const item = this.cart.items.find(item => item.productId === productId);
+    return item ? item.quantity : 0;
+  }
+
+  addProductById(productId: number, quantity: number): void {
     const existingItem = this.cart.items.find(item => item.productId === productId);
     if (existingItem) {
       existingItem.quantity += quantity;
@@ -38,7 +40,7 @@ export class CartService {
     }
   }
 
-  removeProduct(productId: number): void {
+  removeProductById(productId: number): void {
     const item = this.cart.items.find(item => item.productId === productId);
     if (item) {
       this.cart.subTotal -= item.productPrice * item.quantity;
@@ -49,14 +51,14 @@ export class CartService {
     }
   }
 
-  reduceProductQuantity(productId: number, quantity: number): void {
+  reduceProductQuantityById(productId: number, quantity: number): void {
     const item = this.cart.items.find(item => item.productId === productId);
     if (item) {
       if (item.quantity > quantity) {
         item.quantity -= quantity;
         this.cart.subTotal -= item.productPrice * quantity;
       } else {
-        this.removeProduct(productId);
+        this.removeProductById(productId);
       }
       this.cart.lastActiveAt = new Date();
     } else {
@@ -64,9 +66,47 @@ export class CartService {
     }
   }
 
+  checkout(): { success: boolean; message?: string; order?: CartItem[] } {
+    if (this.cart.items.length === 0) {
+      this.clear();
+      return { success: false, message: 'Cart is empty. Please add items before checkout.' };
+    }
+
+    // Check stock for all items first
+    for (const item of this.cart.items) {
+      const product = this._productService.getById(item.productId);
+      if (product && product.stock < item.quantity) {
+        this.clear();
+        return { success: false, message: `Insufficient stock for product ${product.name}. Available: ${product.stock}, Requested: ${item.quantity}` };
+      }
+    }
+
+    // Deduct stock for all items
+    this.cart.items.forEach(item => {
+      const product = this._productService.getById(item.productId);
+      if (product && typeof product.stock === 'number') {
+        product.stock -= item.quantity;
+      }
+    });
+
+    const order = [...this.cart.items];
+    this.clear();
+    return { success: true, order };
+  }
+
   clear(): void {
     this.cart.items = [];
     this.cart.subTotal = 0;
     this.cart.lastActiveAt = new Date();
+  }
+
+  @Cron(CronExpression.EVERY_30_SECONDS)
+  handleCartExpiry() {
+    const twoMinutesAgo = new Date(Date.now() - 2 * 60 * 1000)
+    
+    if (this.cart.items.length > 0 && 
+        this.cart.lastActiveAt <= twoMinutesAgo) {
+      this.clear();
+    }
   }
 }
