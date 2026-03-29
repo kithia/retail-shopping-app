@@ -1,98 +1,67 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useEffect, useState } from 'react'
+import {
+  Text,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+  StyleSheet,
+} from 'react-native'
+import { useRouter } from 'expo-router'
+import { getProducts } from '@/api/services/product-service'
+import { Product } from '@/api/types/product'
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+export default function ProductListScreen() {
+  const router = useRouter()
+  const [products, setProducts] = useState<Product[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
+  useEffect(() => {
+    getProducts()
+      .then(setProducts)
+      .catch((err) => setError(err.message || 'Failed to load products'))
+      .finally(() => setIsLoading(false))
+  }, [])
+
+  if (isLoading) return <ActivityIndicator style={styles.center} />
+  if (error) return <Text style={styles.error}>{error}</Text>
+
   return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
-
-export default function HomeScreen() {
-  return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
-
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
-
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
-
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
-  );
+    <FlatList
+      data={products}
+      keyExtractor={p => p.id.toString()}
+      contentContainerStyle={styles.list}
+      renderItem={({ item }) => (
+        <TouchableOpacity
+          style={styles.card}
+          //onPress={() => router.push(`/product/${item.id}`)}
+        >
+          <Text style={styles.name}>{item.name}</Text>
+          <Text style={styles.price}>£{item.price.toFixed(2)}</Text>
+          <Text style={item.stock > 0 ? styles.inStock : styles.outOfStock}>
+            {item.stock > 0 ? `${item.stock} in stock` : 'Out of stock'}
+          </Text>
+        </TouchableOpacity>
+      )}
+    />
+  )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  list: { padding: 16, gap: 12 },
+  card: {
+    padding: 16,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
   },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
-  },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
-  },
-  title: {
-    textAlign: 'center',
-  },
-  code: {
-    textTransform: 'uppercase',
-  },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
-  },
-});
+  name: { fontSize: 16, fontWeight: '600' },
+  price: { fontSize: 14, color: '#444', marginTop: 4 },
+  inStock: { fontSize: 12, color: 'green', marginTop: 4 },
+  outOfStock: { fontSize: 12, color: 'red', marginTop: 4 },
+  error: { color: 'red', textAlign: 'center', marginTop: 20 },
+})

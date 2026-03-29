@@ -1,16 +1,18 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import React from 'react';
-import { useColorScheme } from 'react-native';
-
+import { Stack } from 'expo-router'
+import { ThemeProvider, DarkTheme, DefaultTheme } from '@react-navigation/native'
 import { AnimatedSplashOverlay } from '@/components/animated-icon';
-import AppTabs from '@/components/app-tabs';
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+export default function StackLayout() {
+
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <ThemeProvider value={DefaultTheme}>
       <AnimatedSplashOverlay />
-      <AppTabs />
+      <Stack>
+        <Stack.Screen name="index" options={{ title: 'Products' }} />
+        <Stack.Screen name="product/[id]" options={{ title: 'Product' }} />
+        {/* <Stack.Screen name="cart" options={{ title: 'Cart' }} />
+        <Stack.Screen name="checkout" options={{ title: 'Checkout' }} /> */}
+      </Stack>
     </ThemeProvider>
-  );
+  )
 }
