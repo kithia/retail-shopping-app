@@ -69,7 +69,7 @@ In your IDE, navigate to `frontend/.env.example`, create a copy in the same dire
 
 ### Run the React Native (Expo) app
 
-This app has been tested on iOS simulator. It is recommend to run it on iOS:
+The frontend application has been tested and developed with an iOS simulator. It is recommend to run it on iOS:
 
 **Note:** 
     To run on an iOS/Android device or simulator, first follow [Expo setup instructions](https://docs.expo.dev/get-started/set-up-your-environment/?mode=development-build&buildEnv=local)
@@ -85,7 +85,7 @@ This app has been tested on iOS simulator. It is recommend to run it on iOS:
 
 ## Testing
 
-This application uses [Jest Testing Framework](https://jestjs.io/docs/getting-started) for testing.
+The applications use [Jest Testing Framework](https://jestjs.io/docs/getting-started) for testing.
 
 To run tests, in the root directory run:
 
@@ -111,8 +111,7 @@ Positive and negative cases on the methods in its services.
 **Frontend:** 
 Positive cases on the methods in its services, with both paths covered for checkout (since it must feedback to user in every scenario).
 
-**Note:**  
-In a production environment, the test suite would be expanded to include controller tests, snapshot tests, integration tests, and end-to-end (E2E) coverage.
+**Note:**  In a production environment, the test suite would be expanded to include controller tests, snapshot tests, integration tests, and end-to-end (E2E) coverage.
 
 ## Reasonable Assumptions
 
