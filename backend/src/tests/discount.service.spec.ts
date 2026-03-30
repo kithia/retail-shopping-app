@@ -1,5 +1,5 @@
-import { DiscountService } from '../discount.service'
-import { CartItem } from 'src/entities/cartItem'
+import { DiscountService } from '../services/discount.service'
+import { CartItem } from '../entities/cartItem'
 
 /**
  * DiscountService Test Suite

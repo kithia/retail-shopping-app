@@ -1,5 +1,5 @@
 import { NotFoundException } from '@nestjs/common'
-import { ProductService } from '../product.service'
+import { ProductService } from '../services/product.service'
 
 /**
  * ProductService Test Suite

@@ -1,7 +1,7 @@
 import { BadRequestException, NotFoundException } from '@nestjs/common'
-import { CartService } from '../cart.service'
-import { ProductService } from '../product.service'
-import { DiscountService } from '../discount.service'
+import { CartService } from '../services/cart.service'
+import { ProductService } from '../services/product.service'
+import { DiscountService } from '../services/discount.service'
 
 /**
  * CartService Test Suite

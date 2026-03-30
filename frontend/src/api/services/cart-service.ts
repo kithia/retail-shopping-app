@@ -1,5 +1,5 @@
 import { CheckoutResponse } from '../../types/dtos/chekout-reponse'
-import client from './../client'
+import client from '../client'
 import { Cart } from '../../types/cart'
 
 /**

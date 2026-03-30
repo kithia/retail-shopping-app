@@ -1,7 +1,7 @@
-import client from '../../client'
-import { getProduct, getProducts } from '../product-service'
+import client from '../api/client'
+import { getProduct, getProducts } from '../api/services/product-service'
 
-jest.mock('../../client', () => ({
+jest.mock('../api/client', () => ({
 	__esModule: true,
 	default: {
 		get: jest.fn(),

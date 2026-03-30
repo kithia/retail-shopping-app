@@ -1,4 +1,4 @@
-import client from '../../client'
+import client from '../api/client'
 import {
 	addProductToCart,
 	checkoutCart,
@@ -6,9 +6,9 @@ import {
 	getCart,
 	reduceProductQuantityInCart,
 	removeProductFromCart,
-} from '../cart-service'
+} from '../api/services/cart-service'
 
-jest.mock('../../client', () => ({
+jest.mock('../api/client', () => ({
 	__esModule: true,
 	default: {
 		get: jest.fn(),
@@ -90,6 +90,20 @@ describe('cart-service', () => {
 		await expect(checkoutCart()).resolves.toEqual(checkoutResponse)
 		expect(mockedClient.post).toHaveBeenCalledWith('/cart/checkout')
 	})
+
+	it('posts checkout and returns a successful response', async () => {
+		const checkoutResponse = {
+			success: true,
+			message: 'Checkout successful!',
+			orderId: 12345,
+		}
+
+		mockedClient.post.mockResolvedValue({ data: checkoutResponse })
+
+		await expect(checkoutCart()).resolves.toEqual(checkoutResponse)
+		expect(mockedClient.post).toHaveBeenCalledWith('/cart/checkout')
+	})
+
 
 	it('posts the clear-cart request', async () => {
 		mockedClient.post.mockResolvedValue({ data: undefined })
